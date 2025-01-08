@@ -25,6 +25,7 @@ public class AwsSdkInstrumentationModule extends AbstractAwsSdkInstrumentationMo
    */
   @Override
   public void registerHelperResources(HelperResourceBuilder helperResourceBuilder) {
+//    System.out.println("======== DEBUG: register for software/amazon/awssdk/global/handlers/execution.interceptors");
     helperResourceBuilder.register("software/amazon/awssdk/global/handlers/execution.interceptors");
   }
 
