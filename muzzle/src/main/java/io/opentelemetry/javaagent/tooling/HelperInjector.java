@@ -6,6 +6,7 @@
 package io.opentelemetry.javaagent.tooling;
 
 import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.SEVERE;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -209,8 +210,10 @@ public class HelperInjector implements Transformer {
     for (HelperResource helperResource : helperResources) {
       List<URL> resources;
       try {
+//        System.out.println("==== DEBUG: injectHelperResources " + helperResource.getAgentPath());
         resources = Collections.list(helpersSource.getResources(helperResource.getAgentPath()));
       } catch (IOException e) {
+//        System.out.println("==== DEBUG: injectHelperResources - IOException " + helperResource.getAgentPath());
         logger.log(
             SEVERE,
             "Unexpected exception occurred when loading resources {}; skipping",
@@ -219,18 +222,22 @@ public class HelperInjector implements Transformer {
         continue;
       }
       if (resources.isEmpty()) {
+//        System.out.println("==== DEBUG: injectHelperResources - resource is empty " + helperResource.getAgentPath());
         logger.log(
             FINE, "Helper resources {0} requested but not found.", helperResource.getAgentPath());
         continue;
       }
 
       if (helperResource.allClassLoaders()) {
+//        System.out.println("==== DEBUG: injectHelperResources - resource is for all class loaders" + helperResource.getAgentPath());
         logger.log(
             FINE,
             "Injecting resources onto all classloaders: {0}",
             helperResource.getApplicationPath());
         HelperResources.registerForAllClassLoaders(helperResource.getApplicationPath(), resources);
       } else {
+        System.out.println("==== DEBUG: injectHelperResources - injectResourceToClassloader - " + helperResource.getAgentPath());
+//        System.out.println("==== DEBUG: injectHelperResources - injectResourceToClassloader classLoader=" + classLoader.name());
         injectResourceToClassloader(classLoader, helperResource.getApplicationPath(), resources);
       }
     }
@@ -241,12 +248,13 @@ public class HelperInjector implements Transformer {
 
   private static void injectResourceToClassloader(
       ClassLoader classLoader, String path, List<URL> resources) {
-    if (logger.isLoggable(FINE)) {
+//    if (logger.isLoggable(FINE)) {
       logger.log(
-          FINE,
+//          FINE,
+          INFO,
           "Injecting resources onto class loader {0} -> {1}",
           new Object[] {classLoader, path});
-    }
+//    }
     HelperResources.register(classLoader, path, resources);
   }
 

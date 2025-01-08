@@ -84,6 +84,7 @@ public class ResourceInjectionInstrumentation implements TypeInstrumentation {
         @Advice.This ClassLoader classLoader,
         @Advice.Argument(0) String name,
         @Advice.Return(readOnly = false) Enumeration<URL> resources) {
+//      System.out.println("==== DEBUG: GetResourcesAdvice.onExit input name =" + name + " classLoader =" + classLoader);
       List<URL> helpers = HelperResources.loadAll(classLoader, name);
       if (helpers.isEmpty()) {
         return;
@@ -97,6 +98,7 @@ public class ResourceInjectionInstrumentation implements TypeInstrumentation {
       List<URL> result = Collections.list(resources);
 
       for (URL helperUrl : helpers) {
+//        System.out.println("==== DEBUG: GetResourcesAdvice.onExit helperUrl" + helperUrl.getPath());
         boolean duplicate = false;
         for (URL loadedUrl : result) {
           if (helperUrl.sameFile(loadedUrl)) {
