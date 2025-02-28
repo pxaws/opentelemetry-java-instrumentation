@@ -97,7 +97,7 @@ public class ResourceInjectionInstrumentation implements TypeInstrumentation {
       List<URL> result = Collections.list(resources);
 
       for (URL helperUrl : helpers) {
-//        System.out.println("==== DEBUG: GetResourcesAdvice.onExit helperUrl" + helperUrl.getPath());
+        System.out.println("==== DEBUG: GetResourcesAdvice.onExit helperUrl" + helperUrl.getPath());
         boolean duplicate = false;
         for (URL loadedUrl : result) {
           if (helperUrl.sameFile(loadedUrl)) {
